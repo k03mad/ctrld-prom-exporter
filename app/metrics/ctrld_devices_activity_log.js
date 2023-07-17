@@ -43,13 +43,14 @@ export default new client.Gauge({
             question: {},
             rrType: {},
             sourceGeoip: {},
+            sourceGeoipDevice: {},
             sourceIp: {},
         };
 
         queries.forEach(query => {
             const deviceName = devices.find(device => device.PK === query.deviceId).name;
 
-            count(store.actionTrigger, `[${query.actionTrigger}] ${query.actionTriggerValue || ''} ${query.actionSpoofTarget ? `=> ${query.actionSpoofTarget}` : ''}`.trim());
+            count(store.actionTrigger, `[${query.actionTrigger}]${query.actionTriggerValue ? ` ${query.actionTriggerValue}` : ''}${query.actionSpoofTarget ? ` => ${query.actionSpoofTarget}` : ''}`);
             count(store.deviceId, deviceName);
             count(store.protocol, query.protocol);
             count(store.question, query.question);
@@ -61,7 +62,8 @@ export default new client.Gauge({
             }
 
             if (query.sourceGeoip.countryCode) {
-                count(store.sourceGeoip, `${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''} (${deviceName})`);
+                count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
+                count(store.sourceGeoipDevice, `${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''} (${deviceName})`);
             }
         });
 
@@ -73,6 +75,7 @@ export default new client.Gauge({
             'question',
             'rrType',
             'sourceGeoip',
+            'sourceGeoipDevice',
             'sourceIp',
         ]);
     },
