@@ -9,10 +9,10 @@ export default new client.Gauge({
     labelNames: ['name'],
 
     async collect() {
-        const {devices} = await Ctrld.get('devices');
+        const {devices} = await Ctrld.devices();
 
         devices.forEach(({last_activity, name}) => {
-            this.set({name}, last_activity);
+            this.labels(name).set(last_activity);
         });
     },
 });

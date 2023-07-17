@@ -15,13 +15,16 @@
   "dependencies": {
     "chalk": "5.3.0",
     "compression": "1.7.4",
+    "date-fns": "2.30.0",
     "express": "4.18.2",
+    "got": "13.0.0",
     "helmet": "7.0.0",
+    "moment": "2.29.4",
     "morgan": "1.10.0",
     "prom-client": "14.2.0"
   },
   "devDependencies": {
-    "@k03mad/eslint-config": "12.0.3",
+    "@k03mad/eslint-config": "12.0.4",
     "@types/node": "20.4.2",
     "eslint": "8.45.0",
     "eslint-plugin-import": "2.27.5",
@@ -35,8 +38,10 @@
   },
   "scripts": {
     "lint": "eslint ./ --report-unused-disable-directives",
-    "setup": "npm i",
-    "start": "nodemon app/server",
+    "clean": "rm -rfv ./node_modules package-lock.json || true",
+    "setup": "npm run clean && npm i",
+    "start": "node app/server",
+    "start:dev": "nodemon app/server --logs",
     "prepare": "husky install"
   }
 }

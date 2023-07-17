@@ -1,10 +1,15 @@
+import got from 'got';
+
 import env from '../../env.js';
 
 /** */
 class Ctrld {
 
     constructor() {
-        this.url = 'https://api.controld.com/';
+        this.urls = {
+            api: 'https://api.controld.com/',
+            analytics: 'https://analytics.controld.com/',
+        };
 
         this.options = {
             headers: {
@@ -15,14 +20,57 @@ class Ctrld {
     }
 
     /**
-     * @param {string} path
+     * @param {object} opts
+     * @param {string} opts.path
+     * @param {string} [opts.url]
+     * @param {object} [opts.options]
      * @returns {object}
      */
-    async get(path) {
-        const response = await fetch(this.url + path, this.options);
+    async _get({options = {}, path, url = this.urls.api}) {
+        const {body} = await got(url + path, {
+            ...this.options,
+            ...options,
+        }).json();
 
-        const {body} = await response.json();
         return body;
+    }
+
+    devices() {
+        return this._get({path: 'devices'});
+    }
+
+    profiles() {
+        return this._get({path: 'profiles'});
+    }
+
+    profilesOptions() {
+        return this._get({path: 'profiles/options'});
+    }
+
+    profilesFilters(profile) {
+        return this._get({path: `profiles/${profile}/filters`});
+    }
+
+    profilesFiltersExternal(profile) {
+        return this._get({path: `profiles/${profile}/filters/external`});
+    }
+
+    proxies() {
+        return this._get({path: 'proxies'});
+    }
+
+    queries({endTs, pageSize = 500, startTs} = {}) {
+        return this._get({
+            url: this.urls.analytics,
+            path: 'queries/historical',
+            options: {
+                searchParams: {
+                    endTs,
+                    startTs,
+                    pageSize,
+                },
+            },
+        });
     }
 
 }
