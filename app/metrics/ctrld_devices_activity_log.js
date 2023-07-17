@@ -5,7 +5,7 @@ import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
 // first num — minutes
-const REQUESTS_INTERVAL = 10 * 60 * 1000;
+const QUERIES_TS_INTERVAL = 10 * 60 * 1000;
 
 export default new client.Gauge({
     name: getCurrentFilename(import.meta.url),
@@ -18,7 +18,7 @@ export default new client.Gauge({
         const [{devices}, {queries}] = await Promise.all([
             Ctrld.devices(),
             Ctrld.queries({
-                startTs: epoch - REQUESTS_INTERVAL,
+                startTs: epoch - QUERIES_TS_INTERVAL,
                 endTs: epoch,
             }),
         ]);
