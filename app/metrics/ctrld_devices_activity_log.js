@@ -5,15 +5,7 @@ import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
 // first num — minutes
-const REQUESTS_INTERVAL = 50 * 60 * 1000;
-
-const setLabels = (ctx, store, labels) => {
-    for (const label of labels) {
-        Object.entries(store[label]).forEach(([name, value]) => {
-            ctx.labels(label, name).set(value);
-        });
-    }
-};
+const REQUESTS_INTERVAL = 5 * 60 * 1000;
 
 export default new client.Gauge({
     name: getCurrentFilename(import.meta.url),
@@ -67,16 +59,10 @@ export default new client.Gauge({
             }
         });
 
-        setLabels(this, store, [
-            'actionTrigger',
-            'answers',
-            'deviceId',
-            'protocol',
-            'question',
-            'rrType',
-            'sourceGeoip',
-            'sourceGeoipDevice',
-            'sourceIp',
-        ]);
+        Object.entries(store).forEach(([label, data]) => {
+            Object.entries(data).forEach(([name, value]) => {
+                this.labels(label, name).set(value);
+            });
+        });
     },
 });
