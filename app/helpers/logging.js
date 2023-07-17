@@ -11,7 +11,7 @@ export const log = msg => console.log(convertToArray(msg).join('\n'));
  * @param {any|any[]} msg
  * @returns {void}
  */
-export const throwError = msg => {
+export const throwPlainError = msg => {
     console.error(`\n${convertToArray(msg).join('\n')}\n`);
     process.exit(1);
 };
