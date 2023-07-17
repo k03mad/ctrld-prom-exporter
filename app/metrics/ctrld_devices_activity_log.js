@@ -26,6 +26,7 @@ export default new client.Gauge({
         const store = {
             actionTrigger: {},
             answers: {},
+            answersCity: {},
             deviceId: {},
             protocol: {},
             question: {},
@@ -48,9 +49,17 @@ export default new client.Gauge({
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
                 const answers = query.answers
                     .filter(elem => elem.geoip?.countryCode)
-                    .flatMap(elem => ({geoip: `${elem.geoip.countryCode} ${elem.geoip?.city || ''}`.trim()}));
+                    .flatMap(elem => ({geoip: elem.geoip.countryCode}));
 
                 answers.forEach(answer => count(store.answers, answer.geoip));
+            }
+
+            if (query.answers?.some(elem => elem.geoip?.city)) {
+                const answers = query.answers
+                    .filter(elem => elem.geoip?.city)
+                    .flatMap(elem => ({geoip: `${elem.geoip?.countryCode || ''} ${elem.geoip.city}`.trim()}));
+
+                answers.forEach(answer => count(store.answersCity, answer.geoip));
             }
 
             if (query.sourceGeoip.countryCode) {
