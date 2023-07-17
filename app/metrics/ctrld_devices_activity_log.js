@@ -61,7 +61,7 @@ export default new client.Gauge({
             }
 
             if (query.sourceGeoip.countryCode) {
-                count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
+                count(store.sourceGeoip, `${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''} (${deviceName})`);
             }
         });
 
