@@ -5,18 +5,14 @@ import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
 // first num — minutes
-const REQUESTS_INTERVAL = 5 * 60 * 1000;
+const REQUESTS_INTERVAL = 50 * 60 * 1000;
 
 const setLabels = (ctx, store, labels) => {
-    labels.forEach(label => {
-        if (Object.keys(store[label]).length > 0) {
-            Object.entries(store[label]).forEach(([name, value]) => {
-                ctx.labels(label, name).set(value);
-            });
-        } else {
-            ctx.reset();
-        }
-    });
+    for (const label of labels) {
+        Object.entries(store[label]).forEach(([name, value]) => {
+            ctx.labels(label, name).set(value);
+        });
+    }
 };
 
 export default new client.Gauge({
@@ -57,8 +53,12 @@ export default new client.Gauge({
             count(store.rrType, query.rrType);
             count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
 
-            if (query.answers?.geoip?.countryCode) {
-                count(store.answers, `${query.answers.geoip.countryCode} ${query.answers.geoip?.city || ''}`.trim());
+            if (query.answers?.some(elem => elem.geoip?.countryCode)) {
+                const answers = query.answers
+                    .filter(elem => elem.geoip?.countryCode)
+                    .flatMap(elem => ({geoip: `${elem.geoip.countryCode} ${elem.geoip?.city || ''}`.trim()}));
+
+                answers.forEach(answer => count(store.answers, answer.geoip));
             }
 
             if (query.sourceGeoip.countryCode) {
