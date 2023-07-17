@@ -1,0 +1,42 @@
+{
+  "name": "ctrld-prom-exporter",
+  "version": "1.0.0",
+  "description": "[ControlD — Prometheus] exporter",
+  "maintainers": [
+    "Kirill Molchanov <k03.mad@gmail.com"
+  ],
+  "repository": "k03mad/ctrld-prom-exporter",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "chalk": "5.3.0",
+    "compression": "1.7.4",
+    "express": "4.18.2",
+    "helmet": "7.0.0",
+    "morgan": "1.10.0",
+    "prom-client": "14.2.0"
+  },
+  "devDependencies": {
+    "@k03mad/eslint-config": "12.0.3",
+    "@types/node": "20.4.2",
+    "eslint": "8.45.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsdoc": "46.4.4",
+    "eslint-plugin-n": "16.0.1",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-sort-destructure-keys": "1.5.0",
+    "eslint-plugin-unicorn": "48.0.0",
+    "husky": "8.0.3",
+    "nodemon": "3.0.1"
+  },
+  "scripts": {
+    "lint": "eslint ./ --report-unused-disable-directives",
+    "setup": "npm i",
+    "start": "nodemon app/server",
+    "prepare": "husky install"
+  }
+}
