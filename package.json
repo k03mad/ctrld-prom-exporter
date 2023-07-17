@@ -38,7 +38,7 @@
   },
   "scripts": {
     "lint": "eslint ./ --report-unused-disable-directives",
-    "clean": "rm -rfv ./node_modules package-lock.json || true",
+    "clean": "rm -rfv ./node_modules || true",
     "setup": "npm run clean && npm i",
     "start": "node app/server",
     "start:dev": "nodemon app/server --logs",
