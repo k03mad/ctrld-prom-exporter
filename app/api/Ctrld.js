@@ -59,18 +59,32 @@ class Ctrld {
         return this._get({path: 'proxies'});
     }
 
-    queries({endTs, pageSize = 500, startTs} = {}) {
-        return this._get({
-            url: this.urls.analytics,
-            path: 'queries/historical',
-            options: {
-                searchParams: {
-                    endTs,
-                    startTs,
-                    pageSize,
-                },
-            },
-        });
+    async queries({endTs, pageSize = 500, pages = 1, startTs} = {}) {
+        let output;
+
+        const searchParams = {
+            endTs,
+            startTs,
+            pageSize,
+        };
+
+        for (let i = 0; i < pages; i++) {
+            const request = {
+                url: this.urls.analytics,
+                path: 'queries/historical',
+                options: {searchParams},
+            };
+
+            if (i === 0) {
+                output = await this._get(request);
+            } else {
+                searchParams.page = i;
+                const {queries} = await this._get(request);
+                output.queries.push(...queries);
+            }
+        }
+
+        return output;
     }
 
 }

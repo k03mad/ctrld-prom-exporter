@@ -5,7 +5,7 @@ import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
 // first num — minutes
-const REQUESTS_INTERVAL = 5 * 60 * 1000;
+const REQUESTS_INTERVAL = 10 * 60 * 1000;
 
 export default new client.Gauge({
     name: getCurrentFilename(import.meta.url),
