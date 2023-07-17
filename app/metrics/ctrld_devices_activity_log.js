@@ -47,9 +47,7 @@ export default new client.Gauge({
         ]);
 
         const store = {
-            actionSpoofTarget: {},
             actionTrigger: {},
-            actionTriggerValue: {},
             answers: {},
             deviceId: {},
             protocol: {},
@@ -84,6 +82,7 @@ export default new client.Gauge({
 
         setLabels(this, store, [
             'actionTrigger',
+            'answers',
             'deviceId',
             'protocol',
             'question',
