@@ -1,15 +1,11 @@
-import fs from 'node:fs/promises';
-
-import {getUnixTime, parseJSON} from 'date-fns';
 import client from 'prom-client';
 
 import Ctrld from '../api/Ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
-const TIMESTAMP_FILE = '.timestamp';
 // first num — minutes
-const REQUESTS_INTERVAL = 60 * 60 * 1000;
+const REQUESTS_INTERVAL = 5 * 60 * 1000;
 
 const setLabels = (ctx, store, labels) => {
     labels.forEach(label => {
@@ -29,13 +25,6 @@ export default new client.Gauge({
     labelNames: ['activity', 'name'],
 
     async collect() {
-        let logsElementLastTimestamp = 0;
-
-        try {
-            const timestampString = await fs.readFile(TIMESTAMP_FILE, {encoding: 'utf8'});
-            logsElementLastTimestamp = Number(timestampString);
-        } catch {}
-
         const epoch = Date.now();
 
         const [{devices}, {queries}] = await Promise.all([
@@ -57,11 +46,7 @@ export default new client.Gauge({
             sourceIp: {},
         };
 
-        for (const query of queries) {
-            if (getUnixTime(parseJSON(query.timestamp)) <= logsElementLastTimestamp) {
-                break;
-            }
-
+        queries.forEach(query => {
             const deviceName = devices.find(device => device.PK === query.deviceId).name;
 
             count(store.actionTrigger, `[${query.actionTrigger}] ${query.actionTriggerValue || ''} ${query.actionSpoofTarget ? `=> ${query.actionSpoofTarget}` : ''}`.trim());
@@ -78,7 +63,7 @@ export default new client.Gauge({
             if (query.sourceGeoip.countryCode) {
                 count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
             }
-        }
+        });
 
         setLabels(this, store, [
             'actionTrigger',
@@ -90,7 +75,5 @@ export default new client.Gauge({
             'sourceGeoip',
             'sourceIp',
         ]);
-
-        await fs.writeFile(TIMESTAMP_FILE, String(epoch).slice(0, -3));
     },
 });
