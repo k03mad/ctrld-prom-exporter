@@ -1,4 +1,4 @@
-import got from 'got';
+import {request, requestCache} from '@k03mad/request';
 
 import env from '../../env.js';
 
@@ -27,10 +27,27 @@ class Ctrld {
      * @returns {object}
      */
     async _get({options = {}, path, url = this.urls.api}) {
-        const {body} = await got(url + path, {
+        const {body: {body}} = await request(url + path, {
             ...this.options,
             ...options,
-        }).json();
+        });
+
+        return body;
+    }
+
+    /**
+     * @param {object} opts
+     * @param {string} opts.path
+     * @param {string} [opts.url]
+     * @param {object} [opts.options]
+     * @param {number} [opts.expire]
+     * @returns {object}
+     */
+    async _getCache({expire = 3600, options = {}, path, url = this.urls.api}) {
+        const {body: {body}} = await requestCache(url + path, {
+            ...this.options,
+            ...options,
+        }, {expire});
 
         return body;
     }
@@ -39,24 +56,28 @@ class Ctrld {
         return this._get({path: 'devices'});
     }
 
+    devicesCache() {
+        return this._getCache({path: 'devices', expire: 600});
+    }
+
     profiles() {
-        return this._get({path: 'profiles'});
+        return this._getCache({path: 'profiles'});
     }
 
     profilesOptions() {
-        return this._get({path: 'profiles/options'});
+        return this._getCache({path: 'profiles/options'});
     }
 
     profilesFilters(profile) {
-        return this._get({path: `profiles/${profile}/filters`});
+        return this._getCache({path: `profiles/${profile}/filters`});
     }
 
     profilesFiltersExternal(profile) {
-        return this._get({path: `profiles/${profile}/filters/external`});
+        return this._getCache({path: `profiles/${profile}/filters/external`});
     }
 
     proxies() {
-        return this._get({path: 'proxies'});
+        return this._getCache({path: 'proxies'});
     }
 
     async queries({endTs, pageSize = 500, pages = 5, startTs} = {}) {
@@ -69,17 +90,22 @@ class Ctrld {
         };
 
         for (let i = 0; i < pages; i++) {
-            const request = {
+            const requestData = {
                 url: this.urls.analytics,
                 path: 'queries/historical',
                 options: {searchParams},
             };
 
             if (i === 0) {
-                output = await this._get(request);
+                output = await this._get(requestData);
             } else {
                 searchParams.page = i;
-                const {queries} = await this._get(request);
+                const {queries} = await this._get(requestData);
+
+                if (queries.length === 0) {
+                    break;
+                }
+
                 output.queries.push(...queries);
             }
         }

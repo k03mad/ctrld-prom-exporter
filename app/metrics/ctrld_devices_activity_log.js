@@ -1,6 +1,6 @@
 import client from 'prom-client';
 
-import Ctrld from '../api/Ctrld.js';
+import Ctrld from '../api/ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
@@ -16,7 +16,7 @@ export default new client.Gauge({
         const epoch = Date.now();
 
         const [{devices}, {queries}] = await Promise.all([
-            Ctrld.devices(),
+            Ctrld.devicesCache(),
             Ctrld.queries({
                 startTs: epoch - QUERIES_TS_INTERVAL,
                 endTs: epoch,
@@ -38,12 +38,18 @@ export default new client.Gauge({
         };
 
         queries.forEach(query => {
-            const deviceName = devices.find(device => device.PK === query.deviceId).name;
+            const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
 
-            count(store.deviceId, deviceName);
+            if (deviceName) {
+                count(store.deviceId, deviceName);
+            }
+
             count(store.protocol, query.protocol);
             count(store.rrType, query.rrType);
-            count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
+
+            if (deviceName) {
+                count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
+            }
 
             count(store.actionTrigger, `[${query.actionTrigger}]${query.actionTriggerValue ? ` ${query.actionTriggerValue}` : ''}${query.actionSpoofTarget ? ` => ${query.actionSpoofTarget}` : ''}`);
 

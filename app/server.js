@@ -11,7 +11,7 @@ import register from './prom.js';
 
 const app = express();
 
-if (env.server.logs) {
+if (env.debug) {
     app.use(morgan('combined'));
 }
 

@@ -16,6 +16,7 @@ const env = {
         token: process.env[TOKEN_ENV_NAME]
            || process.env[`npm_config_${TOKEN_NPM_PARAM_NAME}`],
     },
+    debug: process.env.DEBUG,
 };
 
 if (!env.ctrld.token) {
