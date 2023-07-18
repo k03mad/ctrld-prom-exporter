@@ -40,7 +40,7 @@
     "clean": "rm -rfv ./node_modules || true",
     "setup": "npm run clean && npm i",
     "start": "node app/server",
-    "start:dev": "nodemon app/server --logs",
+    "start:dev": "CTRLD_EXPORTER_LOGS=true nodemon app/server",
     "prepare": "husky install"
   }
 }

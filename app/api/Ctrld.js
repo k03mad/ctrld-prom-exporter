@@ -59,7 +59,7 @@ class Ctrld {
         return this._get({path: 'proxies'});
     }
 
-    async queries({endTs, pageSize = 500, pages = 1, startTs} = {}) {
+    async queries({endTs, pageSize = 500, pages = 5, startTs} = {}) {
         let output;
 
         const searchParams = {
