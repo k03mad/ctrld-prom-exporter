@@ -28,8 +28,9 @@ export default new client.Gauge({
             answers: {},
             answersCity: {},
             deviceId: {},
+            domainsAllowed: {},
+            domainsBlocked: {},
             protocol: {},
-            question: {},
             rrType: {},
             sourceGeoip: {},
             sourceGeoipDevice: {},
@@ -39,12 +40,20 @@ export default new client.Gauge({
         queries.forEach(query => {
             const deviceName = devices.find(device => device.PK === query.deviceId).name;
 
-            count(store.actionTrigger, `[${query.actionTrigger}]${query.actionTriggerValue ? ` ${query.actionTriggerValue}` : ''}${query.actionSpoofTarget ? ` => ${query.actionSpoofTarget}` : ''}`);
             count(store.deviceId, deviceName);
             count(store.protocol, query.protocol);
-            count(store.question, query.question);
             count(store.rrType, query.rrType);
             count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
+
+            count(store.actionTrigger, `[${query.actionTrigger}]${query.actionTriggerValue ? ` ${query.actionTriggerValue}` : ''}${query.actionSpoofTarget ? ` => ${query.actionSpoofTarget}` : ''}`);
+
+            if (query.actionTrigger === 'default') {
+                count(store.domainsAllowed, query.question);
+            }
+
+            if (query.actionTrigger === 'filter') {
+                count(store.domainsBlocked, query.question);
+            }
 
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
                 const answers = query.answers
