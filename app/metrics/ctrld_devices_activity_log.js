@@ -1,6 +1,6 @@
 import client from 'prom-client';
 
-import Ctrld from '../api/ctrld.js';
+import Ctrld from '../api/cotrold.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
