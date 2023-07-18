@@ -1,6 +1,6 @@
 import client from 'prom-client';
 
-import Ctrld from '../api/cotrold.js';
+import Ctrld from '../api/ctrld.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
 export default new client.Gauge({
