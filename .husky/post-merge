@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+if [ -n "${CTRLD_POST_MERGE_RESTART}" ]; then
+    echo restarting exporter service...
+    systemctl restart ctrld-exporter.service
+fi
