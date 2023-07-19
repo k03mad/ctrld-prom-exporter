@@ -39,6 +39,7 @@
     "setup": "npm run clean && npm i",
     "start": "node app/server",
     "start:dev": "DEBUG=mad* nodemon app/server",
+    "update": "git pull && screstart ctrld-exporter.service",
     "prepare": "husky install"
   }
 }
