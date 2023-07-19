@@ -28,8 +28,6 @@ export default new client.Gauge({
             answers: {},
             answersCity: {},
             deviceId: {},
-            domainsAllowed: {},
-            domainsBlocked: {},
             protocol: {},
             rrType: {},
             sourceGeoip: {},
@@ -54,14 +52,6 @@ export default new client.Gauge({
             }
 
             count(store.actionTrigger, `[${query.actionTrigger}]${query.actionTriggerValue ? ` ${query.actionTriggerValue}` : ''}${query.actionSpoofTarget ? ` => ${query.actionSpoofTarget}` : ''}`);
-
-            if (query.actionTrigger === 'default') {
-                count(store.domainsAllowed, query.question);
-            }
-
-            if (query.actionTrigger === 'filter') {
-                count(store.domainsBlocked, query.question);
-            }
 
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
                 const answers = query.answers
