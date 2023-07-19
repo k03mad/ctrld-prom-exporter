@@ -5,7 +5,7 @@ import {getCurrentFilename} from '../helpers/paths.js';
 
 export default new client.Gauge({
     name: getCurrentFilename(import.meta.url),
-    help: 'Ctrld inner stats',
+    help: 'Options counters',
     labelNames: ['type'],
 
     async collect() {

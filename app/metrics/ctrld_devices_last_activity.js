@@ -5,7 +5,7 @@ import {getCurrentFilename} from '../helpers/paths.js';
 
 export default new client.Gauge({
     name: getCurrentFilename(import.meta.url),
-    help: 'Last activity time',
+    help: 'Devices last activity time',
     labelNames: ['name'],
 
     async collect() {
