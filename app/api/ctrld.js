@@ -1,6 +1,7 @@
 import {request, requestCache} from '@k03mad/request';
 
 import env from '../../env.js';
+import {epochWeekAgo} from '../helpers/time.js';
 
 /** */
 class Ctrld {
@@ -50,6 +51,26 @@ class Ctrld {
         }, {expire});
 
         return body;
+    }
+
+    /**
+     * @param {object} [opts]
+     * @param {string} [opts.report]
+     * @param {number} [opts.startTs]
+     * @param {string} [opts.tz]
+     * @returns {object}
+     */
+    getReport({report, startTs = epochWeekAgo(), tz = 'Europe/Moscow'} = {}) {
+        return this._get({
+            url: this.urls.analytics,
+            path: `reports/dns-queries/${report}/pie-chart`,
+            options: {
+                searchParams: {
+                    startTs,
+                    tz,
+                },
+            },
+        });
     }
 
     devices() {
