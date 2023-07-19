@@ -6,6 +6,6 @@ if [ -n "${CTRLD_POST_MERGE_RESTART}" ]; then
     F_BOLD="\033[1m"
     C_BLUE="\033[38;5;33m"
 
-    printf "\n%s%srestarting exporter service...%s" "$F_BOLD" "$C_BLUE" "$NO_FORMAT"
+    echo "\n${F_BOLD}${C_BLUE}restarting exporter service...${NO_FORMAT}"
     systemctl restart ctrld-exporter.service
 fi
