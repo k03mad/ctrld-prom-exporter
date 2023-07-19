@@ -35,6 +35,8 @@ export default new client.Gauge({
             sourceGeoip: {},
             sourceGeoipDevice: {},
             sourceIp: {},
+            sourceIsp: {},
+            sourceIspDevice: {},
         };
 
         queries.forEach(query => {
@@ -80,6 +82,11 @@ export default new client.Gauge({
             if (query.sourceGeoip.countryCode) {
                 count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
                 count(store.sourceGeoipDevice, `${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''} (${deviceName})`);
+            }
+
+            if (query.sourceGeoip.isp) {
+                count(store.sourceIsp, query.sourceGeoip.isp);
+                count(store.sourceIspDevice, `${query.sourceGeoip.isp} (${deviceName})`);
             }
         });
 
