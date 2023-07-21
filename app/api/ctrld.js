@@ -60,7 +60,7 @@ class Ctrld {
      * @param {string} [opts.tz]
      * @returns {object}
      */
-    getReport({report, startTs = epochWeekAgo(), tz = 'Europe/Moscow'} = {}) {
+    getReportPie({report, startTs = epochWeekAgo(), tz = 'Europe/Moscow'} = {}) {
         return this._get({
             url: this.urls.analytics,
             path: `reports/dns-queries/${report}/pie-chart`,
@@ -68,6 +68,28 @@ class Ctrld {
                 searchParams: {
                     startTs,
                     tz,
+                },
+            },
+        });
+    }
+
+    /**
+     * @param {object} [opts]
+     * @param {string} [opts.report]
+     * @param {number} [opts.startTs]
+     * @param {string} [opts.tz]
+     * @param {string} [opts.granularity]
+     * @returns {object}
+     */
+    getReportTime({granularity = 'day', report, startTs = epochWeekAgo(), tz = 'Europe/Moscow'} = {}) {
+        return this._get({
+            url: this.urls.analytics,
+            path: `reports/dns-queries/${report}/time-series`,
+            options: {
+                searchParams: {
+                    startTs,
+                    tz,
+                    granularity,
                 },
             },
         });

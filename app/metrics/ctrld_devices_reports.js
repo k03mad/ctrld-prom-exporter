@@ -1,6 +1,7 @@
 import client from 'prom-client';
 
 import Ctrld from '../api/ctrld.js';
+import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 import {epochMonthAgo, epochWeekAgo} from '../helpers/time.js';
 
@@ -16,7 +17,7 @@ export default new client.Gauge({
             ['week', epochWeekAgo],
             ['month', epochMonthAgo],
         ].map(async ([intervalName, intervalTs]) => {
-            const reports = [
+            const reportsPie = [
                 'bypassed-by-domain',
                 'blocked-by-domain',
                 'blocked-by-filter',
@@ -25,16 +26,34 @@ export default new client.Gauge({
                 'service-triggered-by-service',
             ];
 
-            await Promise.all(reports.map(async report => {
-                const {queries} = await Ctrld.getReport({report, startTs: intervalTs()});
+            const reportTime = 'all-by-verdict';
 
-                [...Object.entries(queries)]
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, TOP_COUNT)
-                    .forEach(([label, count]) => {
-                        this.labels(`${report}-${intervalName}`, label).set(count);
-                    });
-            }));
+            const [{queries}] = await Promise.all([
+                Ctrld.getReportTime({report: reportTime, startTs: intervalTs()}),
+
+                Promise.all(reportsPie.map(async report => {
+                    const {queries: queriesPie} = await Ctrld.getReportPie({report, startTs: intervalTs()});
+
+                    [...Object.entries(queriesPie)]
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, TOP_COUNT)
+                        .forEach(([label, counter]) => {
+                            this.labels(`${report}-${intervalName}`, label).set(counter);
+                        });
+                })),
+            ]);
+
+            const counters = {};
+
+            queries.forEach(query => {
+                Object.keys(query.count).forEach(elem => {
+                    count(counters, elem, query.count[elem]);
+                });
+            });
+
+            Object.entries(counters).forEach(([action, value]) => {
+                this.labels(`${reportTime}-${intervalName}`, action).set(value);
+            });
         }));
     },
 });

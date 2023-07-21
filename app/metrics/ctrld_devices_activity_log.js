@@ -40,18 +40,29 @@ export default new client.Gauge({
         queries.forEach(query => {
             const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
 
-            if (deviceName) {
-                count(store.deviceId, deviceName);
-            }
-
             count(store.protocol, query.protocol);
             count(store.rrType, query.rrType);
 
             if (deviceName) {
                 count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
+                count(store.deviceId, deviceName);
             }
 
-            count(store.actionTrigger, `[${query.actionTrigger}]${query.actionTriggerValue ? ` ${query.actionTriggerValue}` : ''}${query.actionSpoofTarget ? ` => ${query.actionSpoofTarget}` : ''}`);
+            let actionTrigger = `[${query.actionTrigger}]`;
+
+            if (query.actionTriggerValue) {
+                actionTrigger += ` ${query.actionTriggerValue}`;
+            }
+
+            if (query.actionSpoofTarget) {
+                if (query.actionTriggerValue) {
+                    actionTrigger += ' =>';
+                }
+
+                actionTrigger += ` ${query.actionSpoofTarget}`;
+            }
+
+            count(store.actionTrigger, actionTrigger);
 
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
                 const answers = query.answers
