@@ -25,6 +25,7 @@ export default new client.Gauge({
 
         const store = {
             actionTrigger: {},
+            actionTriggerDevice: {},
             answers: {},
             answersCity: {},
             deviceId: {},
@@ -43,11 +44,6 @@ export default new client.Gauge({
             count(store.protocol, query.protocol);
             count(store.rrType, query.rrType);
 
-            if (deviceName) {
-                count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
-                count(store.deviceId, deviceName);
-            }
-
             let actionTrigger = `[${query.actionTrigger}]`;
 
             if (query.actionTriggerValue) {
@@ -63,6 +59,15 @@ export default new client.Gauge({
             }
 
             count(store.actionTrigger, actionTrigger);
+
+            if (deviceName) {
+                count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
+                count(store.deviceId, deviceName);
+
+                if (!['default', 'filter'].includes(query.actionTrigger)) {
+                    count(store.actionTriggerDevice, `${actionTrigger} (${deviceName})`);
+                }
+            }
 
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
                 const answers = query.answers
