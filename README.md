@@ -1,6 +1,6 @@
 # ctrld-prom-exporter
 
-— Get token: https://controld.com/dashboard/api\
+— Get token: https://controld.com/dashboard/api \
 — Start exporter:
 
 ```bash
