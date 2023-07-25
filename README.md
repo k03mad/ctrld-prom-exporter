@@ -1,4 +1,4 @@
-# ctrld-prom-exporter
+# [ControlD — Prometheus] exporter
 
 — [Get token](https://controld.com/dashboard/api) \
 — [Use correct Node.JS version](.nvmrc) \
