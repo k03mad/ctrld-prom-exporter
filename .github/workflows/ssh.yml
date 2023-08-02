@@ -21,5 +21,5 @@ jobs:
           script: |
             cd ~/git/ctrld-prom-exporter
             git pull
-            ~/.nvm/nvm-exec npm run setup
+            ~/.nvm/nvm-exec npm run setup:prod
             systemctl restart ctrld-exporter.service

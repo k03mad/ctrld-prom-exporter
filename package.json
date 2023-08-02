@@ -39,8 +39,9 @@
     "lint:github": "eslint ./ --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "clean": "rm -rfv ./node_modules || true",
     "setup": "npm run clean && npm i",
+    "setup:prod": "npm run clean && npm i --omit=dev",
     "start": "node app/server",
     "start:dev": "DEBUG=mad* nodemon app/server",
-    "prepare": "husky install"
+    "prepare": "husky install || true"
   }
 }
