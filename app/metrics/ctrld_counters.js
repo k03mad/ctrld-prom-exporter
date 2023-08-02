@@ -9,6 +9,8 @@ export default new client.Gauge({
     labelNames: ['type'],
 
     async collect() {
+        this.reset();
+
         const {profiles} = await Ctrld.profiles();
         const firstProfileId = profiles[0].PK;
 

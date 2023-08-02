@@ -9,6 +9,8 @@ export default new client.Gauge({
     labelNames: ['name'],
 
     async collect() {
+        this.reset();
+
         const {devices} = await Ctrld.devices();
 
         devices.forEach(({last_activity, name}) => {

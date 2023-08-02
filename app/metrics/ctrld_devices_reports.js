@@ -13,6 +13,8 @@ export default new client.Gauge({
     labelNames: ['report', 'name'],
 
     async collect() {
+        this.reset();
+
         await Promise.all([
             ['week', epochWeekAgo],
             ['month', epochMonthAgo],

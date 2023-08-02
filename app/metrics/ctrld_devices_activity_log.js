@@ -13,6 +13,8 @@ export default new client.Gauge({
     labelNames: ['activity', 'name'],
 
     async collect() {
+        this.reset();
+
         const epoch = Date.now();
 
         const [{devices}, {queries}] = await Promise.all([
