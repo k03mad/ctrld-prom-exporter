@@ -9,7 +9,7 @@ class Ctrld {
     constructor() {
         this.urls = {
             api: 'https://api.controld.com/',
-            analytics: 'https://analytics.controld.com/',
+            analytics: 'https://europe.analytics.controld.com/',
         };
 
         this.options = {
