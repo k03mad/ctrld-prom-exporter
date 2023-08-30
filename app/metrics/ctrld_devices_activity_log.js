@@ -28,6 +28,8 @@ export default new client.Gauge({
         const store = {
             actionTrigger: {},
             actionTriggerDevice: {},
+            actionTriggerNrdDomain: {},
+            actionTriggerPornDomain: {},
             answers: {},
             answersCity: {},
             deviceId: {},
@@ -50,6 +52,12 @@ export default new client.Gauge({
 
             if (query.actionTriggerValue) {
                 actionTrigger += ` ${query.actionTriggerValue}`;
+
+                if (query.actionTriggerValue === 'nrd') {
+                    count(store.actionTriggerNrdDomain, `${actionTrigger} => ${query.question}`);
+                } else if (query.actionTriggerValue === 'porn') {
+                    count(store.actionTriggerPornDomain, `${actionTrigger} => ${query.question}`);
+                }
             }
 
             if (query.actionSpoofTarget) {
