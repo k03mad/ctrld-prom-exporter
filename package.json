@@ -13,7 +13,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@k03mad/request": "2.2.0",
+    "@k03mad/request": "3.0.1",
     "chalk": "5.3.0",
     "compression": "1.7.4",
     "express": "4.18.2",
@@ -24,10 +24,10 @@
   "devDependencies": {
     "@k03mad/eslint-config": "12.0.6",
     "@microsoft/eslint-formatter-sarif": "3.0.0",
-    "eslint": "8.46.0",
-    "eslint-plugin-import": "2.28.0",
-    "eslint-plugin-jsdoc": "46.4.5",
-    "eslint-plugin-n": "16.0.1",
+    "eslint": "8.48.0",
+    "eslint-plugin-import": "2.28.1",
+    "eslint-plugin-jsdoc": "46.5.1",
+    "eslint-plugin-n": "16.0.2",
     "eslint-plugin-simple-import-sort": "10.0.0",
     "eslint-plugin-sort-destructure-keys": "1.5.0",
     "eslint-plugin-unicorn": "48.0.1",
