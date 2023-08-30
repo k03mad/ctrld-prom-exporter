@@ -50,13 +50,18 @@ export default new client.Gauge({
 
             let actionTrigger = `[${query.actionTrigger}]`;
 
+            let nrdDomain,
+                pornDomain;
+
             if (query.actionTriggerValue) {
                 actionTrigger += ` ${query.actionTriggerValue}`;
 
                 if (query.actionTriggerValue === 'nrd') {
-                    count(store.actionTriggerNrdDomain, `${actionTrigger} => ${query.question}`);
-                } else if (query.actionTriggerValue === 'porn') {
-                    count(store.actionTriggerPornDomain, `${actionTrigger} => ${query.question}`);
+                    nrdDomain = `${actionTrigger} => ${query.question}`;
+                }
+
+                if (query.actionTriggerValue === 'porn') {
+                    pornDomain = `${actionTrigger} => ${query.question}`;
                 }
             }
 
@@ -76,6 +81,14 @@ export default new client.Gauge({
 
                 if (!['default', 'filter'].includes(query.actionTrigger)) {
                     count(store.actionTriggerDevice, `${actionTrigger} (${deviceName})`);
+                }
+
+                if (nrdDomain) {
+                    count(store.actionTriggerNrdDomain, `${nrdDomain} (${deviceName})`);
+                }
+
+                if (pornDomain) {
+                    count(store.actionTriggerPornDomain, `${pornDomain} (${deviceName})`);
                 }
             }
 
