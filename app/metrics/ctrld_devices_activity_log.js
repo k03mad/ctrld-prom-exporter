@@ -1,5 +1,3 @@
-import client from 'prom-client';
-
 import Ctrld from '../api/ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
@@ -7,13 +5,13 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
-export default new client.Gauge({
+export default {
     name: getCurrentFilename(import.meta.url),
     help: 'Devices activity log',
     labelNames: ['activity', 'name'],
 
-    async collect() {
-        this.reset();
+    async collect(ctx) {
+        ctx.reset();
 
         const epoch = Date.now();
 
@@ -121,8 +119,8 @@ export default new client.Gauge({
 
         Object.entries(store).forEach(([label, data]) => {
             Object.entries(data).forEach(([name, value]) => {
-                this.labels(label, name).set(value);
+                ctx.labels(label, name).set(value);
             });
         });
     },
-});
+};

@@ -1,5 +1,3 @@
-import client from 'prom-client';
-
 import Ctrld from '../api/ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
@@ -7,13 +5,13 @@ import {epochMonthAgo, epochWeekAgo} from '../helpers/time.js';
 
 const TOP_COUNT = 50;
 
-export default new client.Gauge({
+export default {
     name: getCurrentFilename(import.meta.url),
     help: 'Devices reports',
     labelNames: ['report', 'name'],
 
-    async collect() {
-        this.reset();
+    async collect(ctx) {
+        ctx.reset();
 
         await Promise.all([
             ['week', epochWeekAgo],
@@ -40,7 +38,7 @@ export default new client.Gauge({
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, TOP_COUNT)
                         .forEach(([label, counter]) => {
-                            this.labels(`${report}-${intervalName}`, label).set(counter);
+                            ctx.labels(`${report}-${intervalName}`, label).set(counter);
                         });
                 })),
             ]);
@@ -54,8 +52,8 @@ export default new client.Gauge({
             });
 
             Object.entries(counters).forEach(([action, value]) => {
-                this.labels(`${reportTime}-${intervalName}`, action).set(value);
+                ctx.labels(`${reportTime}-${intervalName}`, action).set(value);
             });
         }));
     },
-});
+};
