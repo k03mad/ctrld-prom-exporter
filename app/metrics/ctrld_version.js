@@ -10,6 +10,6 @@ export default {
         ctx.reset();
 
         const {versions} = await Ctrld.changelog();
-        ctx.labels('version').set(Number(versions[0].replaceAll(/^v|\.(?=[^.]$)/g, '')));
+        ctx.labels('version').set(Number(versions[0].replaceAll(/^v|\.(?=[^.]*$)/g, '')));
     },
 };
