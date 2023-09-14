@@ -12,6 +12,7 @@ class Ctrld {
             api: 'https://api.controld.com/',
             analytics: 'https://europe.analytics.controld.com/',
             docs: 'https://docs.controld.com/',
+            dns: 'https://dns.controld.com/',
         };
 
         this.options = {
@@ -213,10 +214,41 @@ class Ctrld {
         });
 
         const $ = cheerio.load(html);
+
         return {
             versions: $('[class^=ChangelogPost_title]').get().map(elem => $(elem).text()),
             changelogs: $('[class*=ChangelogPost_text]').get().map(elem => $(elem).text()),
         };
+    }
+
+    /**
+     * @returns {Promise<object>}
+     */
+    async info() {
+        const {body} = await this._get({
+            url: this.urls.dns,
+            path: 'info',
+            options: {
+                headers: {},
+            },
+        });
+
+        return body;
+    }
+
+    /**
+     * @returns {Promise<object>}
+     */
+    async network() {
+        const {body} = await this._getCache({
+            url: this.urls.api,
+            path: 'network',
+            options: {
+                headers: {},
+            },
+        });
+
+        return body;
     }
 
 }
