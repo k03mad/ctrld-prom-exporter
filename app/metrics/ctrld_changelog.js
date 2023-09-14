@@ -10,6 +10,9 @@ export default {
         ctx.reset();
 
         const {changelogs} = await Ctrld.changelog();
-        ctx.labels('changelog', changelogs[0]).set(1);
+
+        changelogs[0].split('\n').filter(Boolean).forEach((item, i) => {
+            ctx.labels('changelog', item).set(++i);
+        });
     },
 };
