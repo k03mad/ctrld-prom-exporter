@@ -208,9 +208,6 @@ class Ctrld {
             url: this.urls.docs,
             path: 'changelog',
             options: {
-                searchParams: {
-                    json: 'on',
-                },
                 headers: {},
             },
         });
