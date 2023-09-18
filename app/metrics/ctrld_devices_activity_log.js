@@ -5,6 +5,11 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
+const FULL_DATA_BY_FILTERS = new Set([
+    'nrd',
+    'porn',
+]);
+
 export default {
     name: getCurrentFilename(import.meta.url),
     help: 'Devices activity log',
@@ -26,8 +31,7 @@ export default {
         const store = {
             actionTrigger: {},
             actionTriggerDevice: {},
-            actionTriggerNrdDomain: {},
-            actionTriggerPornDomain: {},
+            actionTriggerDomain: {},
             answers: {},
             answersCity: {},
             deviceId: {},
@@ -48,18 +52,13 @@ export default {
 
             let actionTrigger = `[${query.actionTrigger}]`;
 
-            let nrdDomain,
-                pornDomain;
+            let filterWithDeviceDomain;
 
             if (query.actionTriggerValue) {
                 actionTrigger += ` ${query.actionTriggerValue}`;
 
-                if (query.actionTriggerValue === 'nrd') {
-                    nrdDomain = `${actionTrigger} => ${query.question}`;
-                }
-
-                if (query.actionTriggerValue === 'porn') {
-                    pornDomain = `${actionTrigger} => ${query.question}`;
+                if (FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)) {
+                    filterWithDeviceDomain = `${actionTrigger} => ${query.question}`;
                 }
             }
 
@@ -81,12 +80,8 @@ export default {
                     count(store.actionTriggerDevice, `${actionTrigger} (${deviceName})`);
                 }
 
-                if (nrdDomain) {
-                    count(store.actionTriggerNrdDomain, `${nrdDomain} (${deviceName})`);
-                }
-
-                if (pornDomain) {
-                    count(store.actionTriggerPornDomain, `${pornDomain} (${deviceName})`);
+                if (filterWithDeviceDomain) {
+                    count(store.actionTriggerDomain, `${filterWithDeviceDomain} (${deviceName})`);
                 }
             }
 
