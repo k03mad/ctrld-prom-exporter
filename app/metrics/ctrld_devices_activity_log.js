@@ -5,6 +5,11 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
+const FULL_DATA_BY_ACTION = new Set([
+    'filter',
+    'rebind',
+]);
+
 const FULL_DATA_BY_FILTERS = new Set([
     'nrd',
     'porn',
@@ -53,14 +58,8 @@ export default {
 
             let actionTrigger = `[${query.actionTrigger}]`;
 
-            let filterWithDeviceDomain;
-
             if (query.actionTriggerValue) {
                 actionTrigger += ` ${query.actionTriggerValue}`;
-
-                if (FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)) {
-                    filterWithDeviceDomain = `${actionTrigger} => ${query.question}`;
-                }
             }
 
             if (query.actionSpoofTarget) {
@@ -77,12 +76,21 @@ export default {
                 count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
                 count(store.deviceId, deviceName);
 
+                actionTrigger += ` (${deviceName})`;
+
                 if (!['default', 'filter'].includes(query.actionTrigger)) {
-                    count(store.actionTriggerDevice, `${actionTrigger} (${deviceName})`);
+                    count(store.actionTriggerDevice, actionTrigger);
                 }
 
-                if (filterWithDeviceDomain) {
-                    count(store.actionTriggerDomain, `${filterWithDeviceDomain} (${deviceName})`);
+                if (query.question) {
+                    actionTrigger += ` :: ${query.question}`;
+                }
+
+                if (
+                    FULL_DATA_BY_ACTION.has(query.actionTrigger)
+                    || FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)
+                ) {
+                    count(store.actionTriggerDomain, actionTrigger);
                 }
             }
 
