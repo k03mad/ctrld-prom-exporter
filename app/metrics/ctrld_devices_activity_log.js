@@ -8,6 +8,7 @@ const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 const FULL_DATA_BY_FILTERS = new Set([
     'nrd',
     'porn',
+    'ai_malware',
 ]);
 
 export default {
