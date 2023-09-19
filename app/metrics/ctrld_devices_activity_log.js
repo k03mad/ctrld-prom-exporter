@@ -54,21 +54,21 @@ export default {
             count(store.protocol, query.protocol);
             count(store.rrType, query.rrType);
 
-            const actionTrigger = [`[${query.actionTrigger}]`];
+            const fullActionString = [`[${query.actionTrigger}]`];
 
             if (query.actionTriggerValue) {
-                actionTrigger.push(query.actionTriggerValue);
+                fullActionString.push(query.actionTriggerValue);
             }
 
             if (query.actionSpoofTarget) {
                 if (query.actionTriggerValue) {
-                    actionTrigger.push('=>');
+                    fullActionString.push('=>');
                 }
 
-                actionTrigger.push(query.actionSpoofTarget);
+                fullActionString.push(query.actionSpoofTarget);
             }
 
-            count(store.actionTrigger, actionTrigger.join(' '));
+            count(store.actionTrigger, fullActionString.join(' '));
 
             const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
 
@@ -76,21 +76,21 @@ export default {
                 count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
                 count(store.deviceId, deviceName);
 
-                actionTrigger.push(`(${deviceName})`);
+                fullActionString.push(`(${deviceName})`);
 
                 if (!['default', 'filter'].includes(query.actionTrigger)) {
-                    count(store.actionTriggerDevice, actionTrigger.join(' '));
+                    count(store.actionTriggerDevice, fullActionString.join(' '));
                 }
 
                 if (query.question) {
-                    actionTrigger.push('::', query.question);
+                    fullActionString.push('::', query.question);
                 }
 
                 if (
                     FULL_DATA_BY_ACTION.has(query.actionTrigger)
                     || FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)
                 ) {
-                    count(store.actionTriggerDomain, actionTrigger.join(' '));
+                    count(store.actionTriggerDomain, fullActionString.join(' '));
                 }
             }
 
