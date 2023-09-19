@@ -51,46 +51,46 @@ export default {
         };
 
         queries.forEach(query => {
-            const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
-
             count(store.protocol, query.protocol);
             count(store.rrType, query.rrType);
 
-            let actionTrigger = `[${query.actionTrigger}]`;
+            const actionTrigger = [`[${query.actionTrigger}]`];
 
             if (query.actionTriggerValue) {
-                actionTrigger += ` ${query.actionTriggerValue}`;
+                actionTrigger.push(query.actionTriggerValue);
             }
 
             if (query.actionSpoofTarget) {
                 if (query.actionTriggerValue) {
-                    actionTrigger += ' =>';
+                    actionTrigger.push('=>');
                 }
 
-                actionTrigger += ` ${query.actionSpoofTarget}`;
+                actionTrigger.push(query.actionSpoofTarget);
             }
 
-            count(store.actionTrigger, actionTrigger);
+            count(store.actionTrigger, actionTrigger.join(' '));
+
+            const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
 
             if (deviceName) {
                 count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
                 count(store.deviceId, deviceName);
 
-                actionTrigger += ` (${deviceName})`;
+                actionTrigger.push(`(${deviceName})`);
 
                 if (!['default', 'filter'].includes(query.actionTrigger)) {
-                    count(store.actionTriggerDevice, actionTrigger);
+                    count(store.actionTriggerDevice, actionTrigger.join(' '));
                 }
 
                 if (query.question) {
-                    actionTrigger += ` :: ${query.question}`;
+                    actionTrigger.push('::', query.question);
                 }
 
                 if (
                     FULL_DATA_BY_ACTION.has(query.actionTrigger)
                     || FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)
                 ) {
-                    count(store.actionTriggerDomain, actionTrigger);
+                    count(store.actionTriggerDomain, actionTrigger.join(' '));
                 }
             }
 
