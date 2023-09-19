@@ -5,10 +5,7 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
-const FULL_DATA_BY_ACTION = new Set([
-    'filter',
-    'rebind',
-]);
+const FULL_DATA_BY_ACTION = new Set(['rebind']);
 
 const FULL_DATA_BY_FILTERS = new Set([
     'nrd',
