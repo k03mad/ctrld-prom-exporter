@@ -5,15 +5,13 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
-const FULL_DATA_BY_ACTION_EXCEPT = new Set([
-    'default',
-    'filter',
-]);
+const FILTER_ACTION = 'filter';
+const EXTERNAL_FILTER_STARTS_WITH = 'x-';
 
-const FULL_DATA_BY_FILTERS = new Set([
-    'nrd',
-    'porn',
-    'ai_malware',
+const exceptActionsForFullData = new Set([
+    'default',
+    'grule',
+    FILTER_ACTION,
 ]);
 
 export default {
@@ -78,19 +76,19 @@ export default {
 
                 fullActionString.push(`(${deviceName})`);
 
-                if (!['default', 'filter'].includes(query.actionTrigger)) {
-                    count(store.actionTriggerDevice, fullActionString.join(' '));
-                }
-
-                if (query.question) {
-                    fullActionString.push('::', query.question);
-                }
-
                 if (
-                    !FULL_DATA_BY_ACTION_EXCEPT.has(query.actionTrigger)
-                    || FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)
+                    !exceptActionsForFullData.has(query.actionTrigger)
+                    || (
+                        query.actionTrigger === FILTER_ACTION
+                        && !query.actionTriggerValue.includes(EXTERNAL_FILTER_STARTS_WITH)
+                    )
                 ) {
-                    count(store.actionTriggerDomain, fullActionString.join(' '));
+                    count(store.actionTriggerDevice, fullActionString.join(' '));
+
+                    if (query.question) {
+                        fullActionString.push('::', query.question);
+                        count(store.actionTriggerDomain, fullActionString.join(' '));
+                    }
                 }
             }
 
