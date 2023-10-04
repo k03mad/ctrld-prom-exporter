@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.1.1"
+      "version": "10.1.2"
     },
     {
       "type": "datasource",
@@ -267,7 +267,7 @@
           "refId": "A"
         }
       ],
-      "title": "Action (device)",
+      "title": "Action Device",
       "type": "timeseries"
     },
     {
@@ -297,11 +297,11 @@
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 3,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -339,7 +339,7 @@
       "options": {
         "legend": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "displayMode": "table",
           "placement": "right",
@@ -366,7 +366,7 @@
           "refId": "A"
         }
       ],
-      "title": "Action Domain (device)",
+      "title": "Action Full",
       "type": "timeseries"
     },
     {
@@ -762,7 +762,7 @@
           "refId": "A"
         }
       ],
-      "title": "Source IP (device)",
+      "title": "Source IP Device",
       "type": "timeseries"
     },
     {
@@ -960,7 +960,7 @@
           "refId": "A"
         }
       ],
-      "title": "Source Geo (device)",
+      "title": "Source Geo Device",
       "type": "timeseries"
     },
     {
@@ -1158,7 +1158,7 @@
           "refId": "A"
         }
       ],
-      "title": "Source ISP (device)",
+      "title": "Source ISP Device",
       "type": "timeseries"
     },
     {
@@ -2962,8 +2962,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3074,8 +3073,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3177,8 +3175,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3257,8 +3254,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3309,7 +3305,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.1",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -3375,8 +3371,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3412,7 +3407,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.1",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -3457,13 +3452,13 @@
     "list": []
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "ControlD",
   "uid": "ad2160cf-3891-4349-a4fd-7d2bb2a2220b",
-  "version": 51,
+  "version": 55,
   "weekStart": ""
 }
