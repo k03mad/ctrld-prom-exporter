@@ -5,7 +5,10 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
-const FULL_DATA_BY_ACTION = new Set(['rebind']);
+const FULL_DATA_BY_ACTION_EXCEPT = new Set([
+    'default',
+    'filter',
+]);
 
 const FULL_DATA_BY_FILTERS = new Set([
     'nrd',
@@ -84,7 +87,7 @@ export default {
                 }
 
                 if (
-                    FULL_DATA_BY_ACTION.has(query.actionTrigger)
+                    !FULL_DATA_BY_ACTION_EXCEPT.has(query.actionTrigger)
                     || FULL_DATA_BY_FILTERS.has(query.actionTriggerValue)
                 ) {
                     count(store.actionTriggerDomain, fullActionString.join(' '));
