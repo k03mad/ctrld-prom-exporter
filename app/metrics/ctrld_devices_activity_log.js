@@ -64,13 +64,24 @@ export default {
             count(store.sourceIpDevice, addDevice(query.sourceIp));
 
             if (query.actionTriggerValue) {
-                count(store.actionTriggerValue, query.actionTriggerValue);
-                count(store.actionTriggerValueDevice, addDevice(query.actionTriggerValue));
+                const triggerValue = [
+                    query.actionTrigger,
+                    query.actionTriggerValue,
+                ].filter(Boolean).join(SEPARATOR);
+
+                count(store.actionTriggerValue, triggerValue);
+                count(store.actionTriggerValueDevice, addDevice(triggerValue));
             }
 
             if (query.actionSpoofTarget) {
-                count(store.actionSpoofTarget, query.actionSpoofTarget);
-                count(store.actionSpoofTargetDevice, addDevice(query.actionSpoofTarget));
+                const spoofTarget = [
+                    query.actionTrigger,
+                    query.actionTriggerValue,
+                    query.actionSpoofTarget,
+                ].filter(Boolean).join(SEPARATOR);
+
+                count(store.actionSpoofTarget, spoofTarget);
+                count(store.actionSpoofTargetDevice, addDevice(spoofTarget));
             }
 
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
