@@ -5,15 +5,6 @@ import {getCurrentFilename} from '../helpers/paths.js';
 // first num — minutes
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 
-const FILTER_ACTION = 'filter';
-const EXTERNAL_FILTER_STARTS_WITH = 'x-';
-
-const exceptActionsForFullData = new Set([
-    'default',
-    'grule',
-    FILTER_ACTION,
-]);
-
 export default {
     name: getCurrentFilename(import.meta.url),
     help: 'Devices activity log',
@@ -35,61 +26,49 @@ export default {
         const store = {
             actionTrigger: {},
             actionTriggerDevice: {},
+            actionTriggerValue: {},
+            actionTriggerValueDevice: {},
             actionTriggerDomain: {},
+            actionTriggerDomainDevice: {},
+            actionSpoofTarget: {},
+            actionSpoofTargetDevice: {},
             answers: {},
             answersCity: {},
             deviceId: {},
             protocol: {},
+            protocolDevice: {},
             rrType: {},
+            rrTypeDevice: {},
             sourceGeoip: {},
             sourceGeoipDevice: {},
             sourceIp: {},
+            sourceIpDevice: {},
             sourceIsp: {},
             sourceIspDevice: {},
         };
 
         queries.forEach(query => {
-            count(store.protocol, query.protocol);
-            count(store.rrType, query.rrType);
+            const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
+            const addDevice = text => `${text} :: ${deviceName}`;
 
-            const fullActionString = [`[${query.actionTrigger}]`];
+            count(store.actionTrigger, query.actionTrigger);
+            count(store.actionTriggerDevice, addDevice(query.actionTrigger));
+            count(store.deviceId, deviceName);
+            count(store.protocol, query.protocol);
+            count(store.protocolDevice, addDevice(query.protocol));
+            count(store.rrType, query.rrType);
+            count(store.rrTypeDevice, addDevice(query.rrType));
+            count(store.sourceIp, query.sourceIp);
+            count(store.sourceIpDevice, addDevice(query.sourceIp));
 
             if (query.actionTriggerValue) {
-                fullActionString.push(query.actionTriggerValue);
+                count(store.actionTriggerValue, query.actionTriggerValue);
+                count(store.actionTriggerValueDevice, addDevice(query.actionTriggerValue));
             }
 
             if (query.actionSpoofTarget) {
-                if (query.actionTriggerValue) {
-                    fullActionString.push('=>');
-                }
-
-                fullActionString.push(query.actionSpoofTarget);
-            }
-
-            count(store.actionTrigger, fullActionString.join(' '));
-
-            const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
-
-            if (deviceName) {
-                count(store.sourceIp, `${query.sourceIp} (${deviceName})`);
-                count(store.deviceId, deviceName);
-
-                fullActionString.push(`(${deviceName})`);
-
-                if (
-                    !exceptActionsForFullData.has(query.actionTrigger)
-                    || (
-                        query.actionTrigger === FILTER_ACTION
-                        && !query.actionTriggerValue.includes(EXTERNAL_FILTER_STARTS_WITH)
-                    )
-                ) {
-                    count(store.actionTriggerDevice, fullActionString.join(' '));
-
-                    if (query.question) {
-                        fullActionString.push('::', query.question);
-                        count(store.actionTriggerDomain, fullActionString.join(' '));
-                    }
-                }
+                count(store.actionSpoofTarget, query.actionSpoofTarget);
+                count(store.actionSpoofTargetDevice, addDevice(query.actionSpoofTarget));
             }
 
             if (query.answers?.some(elem => elem.geoip?.countryCode)) {
@@ -110,12 +89,12 @@ export default {
 
             if (query.sourceGeoip.countryCode) {
                 count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
-                count(store.sourceGeoipDevice, `${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''} (${deviceName})`);
+                count(store.sourceGeoipDevice, addDevice(`${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''}`));
             }
 
             if (query.sourceGeoip.isp) {
                 count(store.sourceIsp, query.sourceGeoip.isp);
-                count(store.sourceIspDevice, `${query.sourceGeoip.isp} (${deviceName})`);
+                count(store.sourceIspDevice, addDevice(query.sourceGeoip.isp));
             }
         });
 
