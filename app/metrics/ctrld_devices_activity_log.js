@@ -56,32 +56,34 @@ export default {
             const deviceName = devices.find(device => device.PK === query.deviceId)?.name;
 
             if (deviceName) {
-                const addDevice = (...texts) => [...texts, deviceName].join(SEPARATOR);
+                const formatString = (...texts) => [...new Set(texts.flat())]
+                    .filter(Boolean)
+                    .join(SEPARATOR);
 
                 count(store.actionTrigger, query.actionTrigger);
-                count(store.actionTriggerDevice, addDevice(query.actionTrigger));
+                count(store.actionTriggerDevice, formatString(query.actionTrigger, deviceName));
                 count(store.deviceId, deviceName);
                 count(store.protocol, query.protocol);
-                count(store.protocolDevice, addDevice(query.protocol));
+                count(store.protocolDevice, formatString(query.protocol, deviceName));
                 count(store.rrType, query.rrType);
-                count(store.rrTypeDevice, addDevice(query.rrType));
+                count(store.rrTypeDevice, formatString(query.rrType, deviceName));
                 count(store.sourceIp, query.sourceIp);
-                count(store.sourceIpDevice, addDevice(query.sourceIp));
+                count(store.sourceIpDevice, formatString(query.sourceIp, deviceName));
 
                 if (query.actionTriggerValue) {
                     const triggerValue = [
                         query.actionTrigger,
                         query.actionTriggerValue,
-                    ].filter(Boolean).join(SEPARATOR);
+                    ];
 
                     count(store.actionTriggerValue, triggerValue);
-                    count(store.actionTriggerValueDevice, addDevice(triggerValue));
+                    count(store.actionTriggerValueDevice, formatString(triggerValue, deviceName));
 
                     if (
                         query.actionTrigger === 'filter'
                         && !query.actionTriggerValue.startsWith(FILTERS_FOR_FULL_LOG_NOT_STARTS_WITH)
                     ) {
-                        count(store.actionTriggerFull, addDevice(triggerValue, query.question));
+                        count(store.actionTriggerFull, formatString(triggerValue, query.question, deviceName));
                     }
                 }
 
@@ -90,10 +92,14 @@ export default {
                         query.actionTrigger,
                         query.actionTriggerValue,
                         query.actionSpoofTarget,
-                    ].filter(Boolean).join(SEPARATOR);
+                    ];
 
                     count(store.actionSpoofTarget, spoofTarget);
-                    count(store.actionSpoofTargetDevice, addDevice(spoofTarget));
+                    count(store.actionSpoofTargetDevice, formatString(spoofTarget, deviceName));
+
+                    if (query.actionTrigger === 'custom') {
+                        count(store.actionTriggerFull, formatString(spoofTarget, query.question, deviceName));
+                    }
                 }
 
                 if (query.answers?.some(elem => elem.geoip?.countryCode)) {
@@ -122,12 +128,12 @@ export default {
 
                 if (query.sourceGeoip?.countryCode) {
                     count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
-                    count(store.sourceGeoipDevice, addDevice(`${query.sourceGeoip.countryCode}${query.sourceGeoip.city ? ` ${query.sourceGeoip.city}` : ''}`));
+                    count(store.sourceGeoipDevice, formatString(query.sourceGeoip.countryCode, query.sourceGeoip.city, deviceName));
                 }
 
                 if (query.sourceGeoip?.isp) {
                     count(store.sourceIsp, query.sourceGeoip.isp);
-                    count(store.sourceIspDevice, addDevice(query.sourceGeoip.isp));
+                    count(store.sourceIspDevice, formatString(query.sourceGeoip.isp, deviceName));
                 }
 
                 if (query.question?.includes('.')) {
