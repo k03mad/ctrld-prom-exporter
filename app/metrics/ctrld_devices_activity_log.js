@@ -6,7 +6,7 @@ import {getCurrentFilename} from '../helpers/paths.js';
 const QUERIES_TS_INTERVAL = 60 * 60 * 1000;
 const SEPARATOR = ' :: ';
 
-const FILTERS_FOR_FULL_LOG_NOT_STARTS_WITH = 'x-';
+const THIRD_PARTY_FILTERS_STARTS_WITH = 'x-';
 
 export default {
     name: getCurrentFilename(import.meta.url),
@@ -81,7 +81,7 @@ export default {
 
                     if (
                         query.actionTrigger === 'filter'
-                        && !query.actionTriggerValue.startsWith(FILTERS_FOR_FULL_LOG_NOT_STARTS_WITH)
+                        && !query.actionTriggerValue.startsWith(THIRD_PARTY_FILTERS_STARTS_WITH)
                     ) {
                         count(store.actionTriggerFull, formatString(triggerValue, query.question, deviceName));
                     }
