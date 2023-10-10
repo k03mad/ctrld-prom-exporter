@@ -102,30 +102,6 @@ export default {
                     }
                 }
 
-                if (query.answers?.some(elem => elem.geoip?.countryCode)) {
-                    const answers = query.answers
-                        .filter(elem => elem.geoip?.countryCode)
-                        .flatMap(elem => ({country: elem.geoip.countryCode}));
-
-                    answers.forEach(answer => count(store.answersCountry, answer.country));
-                }
-
-                if (query.answers?.some(elem => elem.geoip?.city)) {
-                    const answers = query.answers
-                        .filter(elem => elem.geoip?.city)
-                        .flatMap(elem => ({geoip: `${elem.geoip?.countryCode || ''} ${elem.geoip.city}`.trim()}));
-
-                    answers.forEach(answer => count(store.answersCity, answer.geoip));
-                }
-
-                if (query.answers?.some(elem => elem.geoip?.isp)) {
-                    const answers = query.answers
-                        .filter(elem => elem.geoip?.isp)
-                        .flatMap(elem => ({isp: elem.geoip.isp}));
-
-                    answers.forEach(answer => count(store.answersIsp, answer.isp));
-                }
-
                 if (query.sourceGeoip?.countryCode) {
                     count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
                     count(store.sourceGeoipDevice, formatString(query.sourceGeoip.countryCode, query.sourceGeoip.city, deviceName));
@@ -143,6 +119,22 @@ export default {
 
                     count(store.questionDomainFirst, firstDomain);
                     count(store.questionDomainSecond, `${secondDomain}.${firstDomain}`);
+                }
+
+                if (query.answers?.some(elem => elem.geoip?.countryCode)) {
+                    const answers = query.answers
+                        .filter(elem => elem.geoip?.countryCode)
+                        .flatMap(elem => ({country: elem.geoip.countryCode}));
+
+                    answers.forEach(answer => count(store.answersCountry, answer.country));
+                }
+
+                if (query.answers?.some(elem => elem.geoip?.isp)) {
+                    const answers = query.answers
+                        .filter(elem => elem.geoip?.isp)
+                        .flatMap(elem => ({isp: elem.geoip.isp}));
+
+                    answers.forEach(answer => count(store.answersIsp, answer.isp));
                 }
             }
         });
