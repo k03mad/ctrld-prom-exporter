@@ -76,7 +76,7 @@ export default {
                         query.actionTriggerValue,
                     ];
 
-                    count(store.actionTriggerValue, triggerValue);
+                    count(store.actionTriggerValue, formatString(triggerValue));
                     count(store.actionTriggerValueDevice, formatString(triggerValue, deviceName));
 
                     if (
@@ -94,7 +94,7 @@ export default {
                         query.actionSpoofTarget,
                     ];
 
-                    count(store.actionSpoofTarget, spoofTarget);
+                    count(store.actionSpoofTarget, formatString(spoofTarget));
                     count(store.actionSpoofTargetDevice, formatString(spoofTarget, deviceName));
 
                     if (query.actionTrigger === 'custom') {
@@ -103,7 +103,7 @@ export default {
                 }
 
                 if (query.sourceGeoip?.countryCode) {
-                    count(store.sourceGeoip, `${query.sourceGeoip.countryCode} ${query.sourceGeoip.city || ''}`.trim());
+                    count(store.sourceGeoip, formatString(query.sourceGeoip.countryCode, query.sourceGeoip.city));
                     count(store.sourceGeoipDevice, formatString(query.sourceGeoip.countryCode, query.sourceGeoip.city, deviceName));
                 }
 
