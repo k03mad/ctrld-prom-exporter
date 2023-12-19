@@ -7,12 +7,12 @@ const TOKEN_NPM_PARAM_NAME = 'token';
 const env = {
     server: {
         port: process.env.npm_config_port
-           || process.env.CTRLD_EXPORTER_PORT
-           || 11_009,
+        || process.env.CTRLD_EXPORTER_PORT
+        || 11_009,
     },
     ctrld: {
         token: process.env[TOKEN_ENV_NAME]
-           || process.env[`npm_config_${TOKEN_NPM_PARAM_NAME}`],
+        || process.env[`npm_config_${TOKEN_NPM_PARAM_NAME}`],
     },
     debug: process.env.DEBUG,
 };
