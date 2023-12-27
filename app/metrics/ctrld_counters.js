@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/filename-case */
+
 import Ctrld from '../api/ctrld.js';
 import {getCurrentFilename} from '../helpers/paths.js';
 
