@@ -14,7 +14,7 @@ export default {
         const {changelogs} = await Ctrld.changelog();
 
         changelogs[0].split('\n').filter(Boolean).forEach((item, i) => {
-            ctx.labels('changelog', item).set(++i);
+            ctx.labels('changelog', item).set(i + 1);
         });
     },
 };
