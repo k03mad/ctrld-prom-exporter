@@ -11,9 +11,14 @@
 — Start exporter:
 
 ```bash
-npm run start --token=api.1234321 --port=11000
+# one time
+npm i pnpm -g
+pnpm run setup
+
+# start app
+pnpm run start --token=api.1234321 --port=11000
 # or with envs
-CTRLD_API_TOKEN=api.1234321 CTRLD_EXPORTER_PORT=11000 npm run start
+CTRLD_API_TOKEN=api.1234321 CTRLD_EXPORTER_PORT=11000 pnpm run start
 ```
 
 — Update Prometheus `scrape_configs` \
