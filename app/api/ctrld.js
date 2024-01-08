@@ -57,6 +57,42 @@ class Ctrld {
     }
 
     /**
+     * @returns {Promise<{versions: Array, changelogs: Array}>}
+     */
+    async changelog() {
+        const html = await this._getCache({
+            url: this.urls.docs,
+            path: 'changelog',
+            options: {
+                headers: {},
+            },
+        });
+
+        const $ = cheerio.load(html);
+
+        return {
+            versions: $('[class^=ChangelogPost_title]').get().map(elem => $(elem).text()),
+            changelogs: $('[class*=ChangelogPost_text]').get().map(elem => $(elem).text()),
+        };
+    }
+
+    /**
+     * @returns {Promise<object>}
+     */
+    async devices() {
+        const {body} = await this._get({path: 'devices'});
+        return body;
+    }
+
+    /**
+     * @returns {Promise<object>}
+     */
+    async devicesCache() {
+        const {body} = await this._getCache({path: 'devices', expire: 600});
+        return body;
+    }
+
+    /**
      * @param {object} [opts]
      * @param {string} [opts.report]
      * @param {number} [opts.startTs]
@@ -105,16 +141,30 @@ class Ctrld {
     /**
      * @returns {Promise<object>}
      */
-    async devices() {
-        const {body} = await this._get({path: 'devices'});
+    async info() {
+        const {body} = await this._get({
+            url: this.urls.dns,
+            path: 'info',
+            options: {
+                headers: {},
+            },
+        });
+
         return body;
     }
 
     /**
      * @returns {Promise<object>}
      */
-    async devicesCache() {
-        const {body} = await this._getCache({path: 'devices', expire: 600});
+    async network() {
+        const {body} = await this._getCache({
+            url: this.urls.api,
+            path: 'network',
+            options: {
+                headers: {},
+            },
+        });
+
         return body;
     }
 
@@ -123,14 +173,6 @@ class Ctrld {
      */
     async profiles() {
         const {body} = await this._getCache({path: 'profiles'});
-        return body;
-    }
-
-    /**
-     * @returns {Promise<object>}
-     */
-    async profilesOptions() {
-        const {body} = await this._getCache({path: 'profiles/options'});
         return body;
     }
 
@@ -149,6 +191,14 @@ class Ctrld {
      */
     async profilesFiltersExternal(profile) {
         const {body} = await this._getCache({path: `profiles/${profile}/filters/external`});
+        return body;
+    }
+
+    /**
+     * @returns {Promise<object>}
+     */
+    async profilesOptions() {
+        const {body} = await this._getCache({path: 'profiles/options'});
         return body;
     }
 
@@ -199,56 +249,6 @@ class Ctrld {
         }
 
         return output;
-    }
-
-    /**
-     * @returns {Promise<{versions: Array, changelogs: Array}>}
-     */
-    async changelog() {
-        const html = await this._getCache({
-            url: this.urls.docs,
-            path: 'changelog',
-            options: {
-                headers: {},
-            },
-        });
-
-        const $ = cheerio.load(html);
-
-        return {
-            versions: $('[class^=ChangelogPost_title]').get().map(elem => $(elem).text()),
-            changelogs: $('[class*=ChangelogPost_text]').get().map(elem => $(elem).text()),
-        };
-    }
-
-    /**
-     * @returns {Promise<object>}
-     */
-    async info() {
-        const {body} = await this._get({
-            url: this.urls.dns,
-            path: 'info',
-            options: {
-                headers: {},
-            },
-        });
-
-        return body;
-    }
-
-    /**
-     * @returns {Promise<object>}
-     */
-    async network() {
-        const {body} = await this._getCache({
-            url: this.urls.api,
-            path: 'network',
-            options: {
-                headers: {},
-            },
-        });
-
-        return body;
     }
 
 }
