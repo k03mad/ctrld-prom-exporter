@@ -1,5 +1,5 @@
 import {codeText, errorText} from './app/helpers/colors.js';
-import {throwErrorError} from './app/helpers/logging.js';
+import {throwError} from './app/helpers/logging.js';
 
 const TOKEN_ENV_NAME = 'CTRLD_API_TOKEN';
 const TOKEN_NPM_PARAM_NAME = 'token';
@@ -18,7 +18,7 @@ const env = {
 };
 
 if (!env.ctrld.token) {
-    throwErrorError([
+    throwError([
         errorText(' Ctrld API token is not specified '),
         `> use env variable: ${codeText(TOKEN_ENV_NAME)}`,
         `> or npm parameter: ${codeText(`--${TOKEN_NPM_PARAM_NAME}`)}`,
