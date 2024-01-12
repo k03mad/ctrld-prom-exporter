@@ -22,4 +22,4 @@ CTRLD_API_TOKEN=api.1234321 CTRLD_EXPORTER_PORT=11000 npm run start
 ```
 
 — Update Prometheus `scrape_configs` \
-— [Import Grafana dashboard](grafana.json)
+— [Import Grafana dashboard](grafana)
