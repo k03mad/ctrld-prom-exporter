@@ -20,6 +20,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/git/ctrld-prom-exporter
+            git reset --hard
             git pull
             ~/.nvm/nvm-exec npm run setup
             systemctl restart ctrld-exporter.service
