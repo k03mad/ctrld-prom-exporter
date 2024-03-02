@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@k03mad/request':
-    specifier: 5.6.1
-    version: 5.6.1
+    specifier: 5.6.2
+    version: 5.6.2
   '@k03mad/simple-log':
     specifier: 2.1.2
     version: 2.1.2
@@ -164,8 +164,8 @@ packages:
       - vue-eslint-parser
     dev: true
 
-  /@k03mad/request@5.6.1:
-    resolution: {integrity: sha512-zczwuPlZ6/dkBJ/H0voqu9AfCVKxFUjZQ7O7AqPkQpDkeVXegOYHC6emFWSe/IvrUmwyGFYhi8MceTU4hbdkwA==}
+  /@k03mad/request@5.6.2:
+    resolution: {integrity: sha512-rBWjWlkRK8uKDYvQFbzbNH/URbXUw4284vj425LhOzedMQA1oTbr/0dXCooszeY8J+PT1n9jaOS4KIPivujqjg==}
     engines: {node: '>=20'}
     dependencies:
       chalk: 5.3.0
