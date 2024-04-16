@@ -15,6 +15,10 @@ const env = {
         token: process.env[TOKEN_ENV_NAME]
         || process.env[`npm_config_${TOKEN_NPM_PARAM_NAME}`],
     },
+    metrics: {
+        turnOff: process.env.npm_config_turnoff
+        || process.env.CTRLD_EXPORTER_METRICS_TURN_OFF,
+    },
     debug: process.env.DEBUG,
 };
 
