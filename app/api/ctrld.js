@@ -99,10 +99,10 @@ class Ctrld {
      * @param {string} [opts.tz]
      * @returns {Promise<object>}
      */
-    async getReportPie({report, startTs = epochWeekAgo(), tz = 'Europe/Moscow'} = {}) {
+    async getReport({report, startTs = epochWeekAgo(), tz = 'Europe/Moscow'} = {}) {
         const {body} = await this._get({
             url: this.urls.analytics,
-            path: `reports/dns-queries/${report}/pie-chart`,
+            path: `reports/dns-queries/${report}`,
             options: {
                 searchParams: {
                     startTs,

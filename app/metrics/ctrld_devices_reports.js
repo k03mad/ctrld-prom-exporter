@@ -18,12 +18,15 @@ export default {
             ['month', epochMonthAgo],
         ].map(async ([intervalName, intervalTs]) => {
             const reportsPie = [
-                'bypassed-by-domain',
-                'blocked-by-domain',
-                'blocked-by-filter',
-                'redirected-by-location',
-                'redirected-by-domain',
-                'service-triggered-by-service',
+                'blocked-by-domain/pie-chart',
+                'blocked-by-filter/pie-chart',
+                'bypassed-by-domain/pie-chart',
+                'counts-by-destination-country',
+                'counts-by-destination-isp',
+                'counts-by-source-country',
+                'redirected-by-domain/pie-chart',
+                'redirected-by-location/pie-chart',
+                'service-triggered-by-service/pie-chart',
             ];
 
             const reportTime = 'all-by-verdict';
@@ -32,7 +35,7 @@ export default {
                 Ctrld.getReportTime({report: reportTime, startTs: intervalTs()}),
 
                 Promise.all(reportsPie.map(async report => {
-                    const {queries: queriesPie} = await Ctrld.getReportPie({report, startTs: intervalTs()});
+                    const {queries: queriesPie} = await Ctrld.getReport({report, startTs: intervalTs()});
 
                     [...Object.entries(queriesPie)]
                         .sort((a, b) => b[1] - a[1])

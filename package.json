@@ -23,10 +23,10 @@
     "cheerio": "1.0.0-rc.12"
   },
   "devDependencies": {
-    "@k03mad/eslint-config": "21.0.0",
+    "@k03mad/eslint-config": "22.1.0",
     "eslint": "8.57.0",
     "husky": "9.0.11",
-    "nodemon": "3.1.0"
+    "nodemon": "3.1.2"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
