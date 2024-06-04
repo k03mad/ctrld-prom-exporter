@@ -5,6 +5,20 @@ import {epochMonthAgo, epochWeekAgo} from '../helpers/time.js';
 
 const TOP_COUNT = 50;
 
+const reports = [
+    'blocked-by-domain/pie-chart',
+    'blocked-by-filter/pie-chart',
+    'bypassed-by-domain/pie-chart',
+    'counts-by-destination-country',
+    'counts-by-destination-isp',
+    'counts-by-source-country',
+    'redirected-by-domain/pie-chart',
+    'redirected-by-location/pie-chart',
+    'service-triggered-by-service/pie-chart',
+];
+
+const reportTime = 'all-by-verdict';
+
 export default {
     name: getCurrentFilename(import.meta.url),
     help: 'Devices reports',
@@ -17,31 +31,18 @@ export default {
             ['week', epochWeekAgo],
             ['month', epochMonthAgo],
         ].map(async ([intervalName, intervalTs]) => {
-            const reportsPie = [
-                'blocked-by-domain/pie-chart',
-                'blocked-by-filter/pie-chart',
-                'bypassed-by-domain/pie-chart',
-                'counts-by-destination-country',
-                'counts-by-destination-isp',
-                'counts-by-source-country',
-                'redirected-by-domain/pie-chart',
-                'redirected-by-location/pie-chart',
-                'service-triggered-by-service/pie-chart',
-            ];
-
-            const reportTime = 'all-by-verdict';
-
             const [{queries}] = await Promise.all([
                 Ctrld.getReportTime({report: reportTime, startTs: intervalTs()}),
 
-                Promise.all(reportsPie.map(async report => {
+                Promise.all(reports.map(async report => {
                     const {queries: queriesPie} = await Ctrld.getReport({report, startTs: intervalTs()});
 
                     [...Object.entries(queriesPie)]
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, TOP_COUNT)
                         .forEach(([label, counter]) => {
-                            ctx.labels(`${report}-${intervalName}`, label).set(counter);
+                            const reportName = `${report.split('/')[0]}-${intervalName}`;
+                            ctx.labels(reportName, label).set(counter);
                         });
                 })),
             ]);
