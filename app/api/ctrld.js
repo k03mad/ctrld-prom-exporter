@@ -158,7 +158,6 @@ class Ctrld {
      */
     async network() {
         const {body} = await this._getCache({
-            url: this.urls.api,
             path: 'network',
             options: {
                 headers: {},
@@ -199,6 +198,15 @@ class Ctrld {
      */
     async profilesOptions() {
         const {body} = await this._getCache({path: 'profiles/options'});
+        return body;
+    }
+
+    /**
+     * @param {string} profile
+     * @returns {Promise<object>}
+     */
+    async profilesRulesAll(profile) {
+        const {body} = await this._getCache({path: `profiles/${profile}/rules/all`});
         return body;
     }
 
@@ -252,4 +260,5 @@ class Ctrld {
     }
 
 }
+
 export default new Ctrld();

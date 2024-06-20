@@ -1,4 +1,3 @@
-import env from '../../env.js';
 import Ctrld from '../api/ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
@@ -19,13 +18,23 @@ export default {
 
         const epoch = Date.now();
 
-        const [{devices}, {queries}] = await Promise.all([
+        const [{profiles}, {devices}, {queries}] = await Promise.all([
+            Ctrld.profiles(),
             Ctrld.devicesCache(),
             Ctrld.queries({
                 startTs: epoch - QUERIES_TS_INTERVAL,
                 endTs: epoch,
             }),
         ]);
+
+        const randomRedirectDomains = await Promise.all(profiles.map(async profile => {
+            const {rules} = await Ctrld.profilesRulesAll(profile.PK);
+            return rules
+                .filter(rule => rule.action.do === 3 && rule.action.via === '?')
+                .map(rule => rule.PK);
+        }));
+
+        const uniqRandomRedirectDomains = new Set(randomRedirectDomains.flat());
 
         const store = {
             actionTrigger: {},
@@ -95,9 +104,7 @@ export default {
                         query.actionSpoofTarget,
                     ];
 
-                    if (
-                        env.ctrld.redirectDomainsRandom
-                        && env.ctrld.redirectDomainsRandom.split(',').includes(query.actionTriggerValue)) {
+                    if (uniqRandomRedirectDomains.has(query.actionTriggerValue)) {
                         spoofTarget[2] = 'RANDOM';
                     }
 
