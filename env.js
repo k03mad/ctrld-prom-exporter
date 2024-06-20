@@ -14,6 +14,8 @@ const env = {
     ctrld: {
         token: process.env[TOKEN_ENV_NAME]
         || process.env[`npm_config_${TOKEN_NPM_PARAM_NAME}`],
+        redirectDomainsRandom: process.env.CTRLD_EXPORTER_REDIRECT_DOMAINS_RANDOM
+        || process.env.redirect,
     },
     metrics: {
         turnOff: process.env.npm_config_turnoff

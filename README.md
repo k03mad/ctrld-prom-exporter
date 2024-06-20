@@ -19,7 +19,7 @@
 npm run setup
 
 # start app
-npm run start --token=api.1234321 --port=11000 --turnoff=ctrld_latency,ctrld_locations
+npm run start --token=api.1234321 --port=11000 --turnoff=ctrld_latency,ctrld_locations --redirect=some.domain.com,another.domain.com
 # or with envs
-CTRLD_API_TOKEN=api.1234321 CTRLD_EXPORTER_PORT=11000 CTRLD_EXPORTER_METRICS_TURN_OFF=ctrld_latency,ctrld_locations npm run start
+CTRLD_API_TOKEN=api.1234321 CTRLD_EXPORTER_PORT=11000 CTRLD_EXPORTER_METRICS_TURN_OFF=ctrld_latency,ctrld_locations CTRLD_EXPORTER_REDIRECT_DOMAINS_RANDOM=some.domain.com,another.domain.com npm run start
 ```

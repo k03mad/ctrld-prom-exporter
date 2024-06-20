@@ -1,3 +1,4 @@
+import env from '../../env.js';
 import Ctrld from '../api/ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
@@ -93,6 +94,12 @@ export default {
                         query.actionTriggerValue,
                         query.actionSpoofTarget,
                     ];
+
+                    if (
+                        env.ctrld.redirectDomainsRandom
+                        && env.ctrld.redirectDomainsRandom.split(',').includes(query.actionTriggerValue)) {
+                        spoofTarget[2] = 'RANDOM';
+                    }
 
                     count(store.actionSpoofTarget, formatString(spoofTarget));
                     count(store.actionSpoofTargetDevice, formatString(spoofTarget, deviceName));
