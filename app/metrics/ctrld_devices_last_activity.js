@@ -11,7 +11,7 @@ export default {
 
         const {devices} = await Ctrld.devices();
 
-        devices?.forEach(({last_activity, name}) => {
+        devices?.forEach(({last_activity = 0, name}) => {
             ctx.labels(name).set(last_activity);
         });
     },
