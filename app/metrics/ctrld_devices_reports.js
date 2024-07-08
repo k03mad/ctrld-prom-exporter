@@ -1,7 +1,8 @@
 import Ctrld from '../api/ctrld.js';
 import {count} from '../helpers/object.js';
 import {getCurrentFilename} from '../helpers/paths.js';
-import {epochMonthAgo, epochWeekAgo} from '../helpers/time.js';
+// eslint-disable-next-line no-inline-comments
+import {/** epochMonthAgo, */epochWeekAgo} from '../helpers/time.js';
 
 const TOP_COUNT = 50;
 
@@ -29,7 +30,7 @@ export default {
 
         await Promise.all([
             ['week', epochWeekAgo],
-            ['month', epochMonthAgo],
+            // ['month', epochMonthAgo],
         ].map(async ([intervalName, intervalTs]) => {
             const [{queries}] = await Promise.all([
                 Ctrld.getReportTime({report: reportTime, startTs: intervalTs()}),
