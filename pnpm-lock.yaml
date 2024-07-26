@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@k03mad/request':
-        specifier: 5.8.1
-        version: 5.8.1
+        specifier: 6.0.3
+        version: 6.0.3
       '@k03mad/simple-log':
         specifier: 2.2.1
         version: 2.2.1
@@ -31,8 +31,8 @@ importers:
         specifier: 8.57.0
         version: 8.57.0
       husky:
-        specifier: 9.0.11
-        version: 9.0.11
+        specifier: 9.1.2
+        version: 9.1.2
       nodemon:
         specifier: 3.1.4
         version: 3.1.4
@@ -94,8 +94,8 @@ packages:
     resolution: {integrity: sha512-x75Wt1klUN9fj6xaeGLcctyEXZ4x0RF+9FFCF2dEkXki7scugo3qKuFonlHgKfgyTRGAODWxQRkbGD3gg1kZ7g==}
     engines: {node: '>=20'}
 
-  '@k03mad/request@5.8.1':
-    resolution: {integrity: sha512-C1CouQdbkVKGUsVtrURBEQGhlHAcqqxJqdYAEd0ZrXYUFXnoznbC+iNGnKKpLcD2AcdT5K6gNREwr2HqcZgHbQ==}
+  '@k03mad/request@6.0.3':
+    resolution: {integrity: sha512-R+MqHUwlxDo7totJyevB7KWxuMy0nBHLAXcxDDbPeKzBwQJjkXCt05HDTKE25KsbtWocDd0c4HUgikSQtC0rOw==}
     engines: {node: '>=20'}
 
   '@k03mad/simple-date@1.1.0':
@@ -964,8 +964,8 @@ packages:
     resolution: {integrity: sha512-V5nVw1PAOgfI3Lmeaj2Exmeg7fenjhRUgz1lPSezy1CuhPYbgQtbQj4jZfEAEMlaL+vupsvhjqCyjzob0yxsmQ==}
     engines: {node: '>=10.19.0'}
 
-  husky@9.0.11:
-    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+  husky@9.1.2:
+    resolution: {integrity: sha512-1/aDMXZdhr1VdJJTLt6e7BipM0Jd9qkpubPiIplon1WmCeOy3nnzsCMeBqS9AsL5ioonl8F8y/F2CLOmk19/Pw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1876,7 +1876,7 @@ snapshots:
       - typescript
       - vue-eslint-parser
 
-  '@k03mad/request@5.8.1':
+  '@k03mad/request@6.0.3':
     dependencies:
       chalk: 5.3.0
       debug: 4.3.5(supports-color@5.5.0)
@@ -2982,7 +2982,7 @@ snapshots:
       quick-lru: 5.1.1
       resolve-alpn: 1.2.1
 
-  husky@9.0.11: {}
+  husky@9.1.2: {}
 
   iconv-lite@0.4.24:
     dependencies:
